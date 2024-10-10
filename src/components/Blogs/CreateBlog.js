@@ -19,18 +19,17 @@ const CreateBlog = () => {
     e.preventDefault();
     const stripe = await stripePromise;
 
-    // Step 1: Store blog data temporarily in localStorage
     localStorage.setItem('blogData', JSON.stringify(formData));
 
     try {
-      // Step 2: Create a Checkout Session
+    
       const { data } = await axios.post(`${API_URL}/api/payments/create-checkout-session`, {
-        amount: 1000, // Amount in cents ($10)
+        amount: 1000, 
       });
 
-      // Step 3: Redirect to Stripe Checkout for payment processing
+     g
       const result = await stripe.redirectToCheckout({
-        sessionId: data.sessionId, // Use session ID from response
+        sessionId: data.sessionId, 
       });
 
       if (result.error) {

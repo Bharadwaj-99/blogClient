@@ -11,7 +11,7 @@ const BlogGrid = () => {
     const fetchBlogs = async () => {
       try {
         
-        const location = 'India'; // Placeholder for user's location
+        const location = 'India'; 
 
         const res = await axios.get(`${API_URL}/api/blogs`, {
           params: { location },

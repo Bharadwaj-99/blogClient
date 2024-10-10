@@ -1,7 +1,6 @@
-// src/pages/Blogs.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import BlogCard from '../components/Blogs/BlogCard'; // Assuming you have a BlogCard component
+import BlogCard from '../components/Blogs/BlogCard'; 
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);

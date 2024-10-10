@@ -1,4 +1,3 @@
-// src/pages/Cancel.js
 import React from 'react';
 
 const Cancel = () => {
