@@ -1,9 +1,11 @@
-
-import React, { useState,  } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-
 import { useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 const API_URL = process.env.REACT_APP_BACKEND_URL;
+
 const CreateBlog = () => {
   const [formData, setFormData] = useState({
     title: '',
@@ -11,30 +13,31 @@ const CreateBlog = () => {
     content: '',
     labels: '',
   });
-
   const navigate = useNavigate();
 
   const handlePaymentAndSubmit = async (e) => {
     e.preventDefault();
-    try {
-    
+    const stripe = await stripePromise;
 
-      const token = localStorage.getItem('authToken');
-      await axios.post(
-        `${API_URL}/api/blogs`,
-        {
-          ...formData,
-          labels: formData.labels.split(',').map((label) => label.trim()),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      navigate('/blogs');
+    // Step 1: Store blog data temporarily in localStorage
+    localStorage.setItem('blogData', JSON.stringify(formData));
+
+    try {
+      // Step 2: Create a Checkout Session
+      const { data } = await axios.post(`${API_URL}/api/payments/create-checkout-session`, {
+        amount: 1000, // Amount in cents ($10)
+      });
+
+      // Step 3: Redirect to Stripe Checkout for payment processing
+      const result = await stripe.redirectToCheckout({
+        sessionId: data.sessionId, // Use session ID from response
+      });
+
+      if (result.error) {
+        console.error('Payment error:', result.error.message);
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Error creating blog or processing payment:', error);
     }
   };
 

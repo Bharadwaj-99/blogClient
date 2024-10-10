@@ -10,6 +10,8 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import CreateBlog from './components/Blogs/CreateBlog';
 import PrivateRoute from './components/Utils/PrivateRoute';
+import Success from './pages/Success';
+import Cancel from './pages/Cancel'; 
 import './index.css'; 
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="/success" element={<Success />} />
+            <Route path="/cancel" element={<Cancel />} /> {/* Create Cancel page */}
           </Routes>
         </div>
         <Footer />
